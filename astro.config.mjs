@@ -7,7 +7,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   site: 'https://JoaCifu.github.io',
-  base: '/taller-artefacto-curioso',
+  base: '/ArtefactoCurioso',
   vite: {
     plugins: [tailwindcss()],
   },
