@@ -1,14 +1,28 @@
 ---
----
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 
+const proyectos = (await getCollection('proyectos'))
+  .filter((p) => p.data.publicado)
+  .sort((a, b) => b.data.anio - a.data.anio);
+---
 <html lang="es">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>Taller Artefacto Curioso</title>
   </head>
-  <body class="bg-stone-50 text-stone-900">
-    <h1 class="p-10 text-4xl font-bold">Taller Artefacto Curioso</h1>
-    <p class="px-10">Sitio en construcción.</p>
+  <body class="bg-stone-50 text-stone-900 p-8">
+    <h1 class="text-4xl font-bold mb-8">Taller Artefacto Curioso</h1>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {proyectos.map((p) => (
+        <article>
+          <Image src={p.data.fotos[0]} alt={p.data.titulo} width={600} />
+          <h2 class="text-xl font-bold mt-2">{p.data.titulo} ({p.data.anio})</h2>
+          <p>{p.data.usos.join(', ')} · {p.data.materiales.join(', ')}</p>
+          <p class="text-sm">{p.data.fotos.length} fotos</p>
+        </article>
+      ))}
+    </div>
   </body>
 </html>
