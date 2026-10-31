@@ -8,9 +8,9 @@ usos:
 materiales:
   - madera
 fotos:
-  - ./camara1.jpg
-  - ./camara2.jpg
-  - ./camara3.jpg
+  - ./cam1.jpg
+  - ./cam2.jpg
+  - ./cam3.jpg
 publicado: true
 destacado: false
 ---
