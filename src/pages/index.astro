@@ -1,17 +1,10 @@
 ---
-import { getCollection } from 'astro:content';
+import { obtenerProyectos } from '../data/proyectos';
 import Base from '../layouts/Base.astro';
 import TarjetaProyecto from '../components/TarjetaProyecto.astro';
 import { USOS, MATERIALES } from '../data/atributos';
 
-const proyectos = (await getCollection('proyectos'))
-  .filter((p) => p.data.publicado)
-  .sort(
-    (a, b) =>
-      Number(b.data.destacado) - Number(a.data.destacado) ||
-      b.data.anio - a.data.anio,
-  );
-
+const proyectos = await obtenerProyectos();
 // Solo se ofrecen filtros que tengan al menos un proyecto
 const usosPresentes = USOS.filter((u) => proyectos.some((p) => p.data.usos.includes(u)));
 const materialesPresentes = MATERIALES.filter((m) =>
