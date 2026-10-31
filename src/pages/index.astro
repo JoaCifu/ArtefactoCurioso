@@ -1,28 +1,117 @@
 ---
 import { getCollection } from 'astro:content';
-import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import TarjetaProyecto from '../components/TarjetaProyecto.astro';
+import { USOS, MATERIALES } from '../data/atributos';
 
 const proyectos = (await getCollection('proyectos'))
   .filter((p) => p.data.publicado)
-  .sort((a, b) => b.data.anio - a.data.anio);
+  .sort(
+    (a, b) =>
+      Number(b.data.destacado) - Number(a.data.destacado) ||
+      b.data.anio - a.data.anio,
+  );
+
+// Solo se ofrecen filtros que tengan al menos un proyecto
+const usosPresentes = USOS.filter((u) => proyectos.some((p) => p.data.usos.includes(u)));
+const materialesPresentes = MATERIALES.filter((m) =>
+  proyectos.some((p) => p.data.materiales.includes(m)),
+);
+
+const grupos = [
+  { clave: 'usos', titulo: 'Uso', valores: usosPresentes },
+  { clave: 'materiales', titulo: 'Material', valores: materialesPresentes },
+];
 ---
-<html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Taller Artefacto Curioso</title>
-  </head>
-  <body class="bg-stone-50 text-stone-900 p-8">
-    <h1 class="text-4xl font-bold mb-8">Taller Artefacto Curioso</h1>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {proyectos.map((p) => (
-        <article>
-          <Image src={p.data.fotos[0]} alt={p.data.titulo} width={600} />
-          <h2 class="text-xl font-bold mt-2">{p.data.titulo} ({p.data.anio})</h2>
-          <p>{p.data.usos.join(', ')} · {p.data.materiales.join(', ')}</p>
-          <p class="text-sm">{p.data.fotos.length} fotos</p>
-        </article>
-      ))}
-    </div>
-  </body>
-</html>
+<Base>
+  <section class="mb-8 max-w-2xl">
+    <h1 class="text-3xl font-bold mb-2">Proyectos</h1>
+    <p>
+      Utilería, escenografía, muñecos y corpóreos hechos a mano.
+      Filtra por uso o material para explorar nuestros trabajos.
+    </p>
+  </section>
+
+  <section class="mb-8 space-y-4" aria-label="Filtros">
+    {grupos.map((g) => (
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-sm font-bold mr-2 w-20">{g.titulo}</span>
+        {g.valores.map((v) => (
+          <button
+            type="button"
+            data-filtro={g.clave}
+            data-valor={v}
+            aria-pressed="false"
+            class="first-letter:uppercase rounded-full border border-tinta/40 px-3 py-1 text-sm
+                   hover:border-acento transition-colors
+                   aria-pressed:bg-acento aria-pressed:border-acento aria-pressed:text-white"
+          >
+            {v}
+          </button>
+        ))}
+      </div>
+    ))}
+    <button id="limpiar" type="button" hidden class="text-sm underline hover:text-acento">
+      Limpiar filtros
+    </button>
+  </section>
+
+  <div class="columns-1 sm:columns-2 lg:columns-3 gap-4">
+    {proyectos.map((p) => <TarjetaProyecto proyecto={p} />)}
+  </div>
+
+  <p id="vacio" hidden class="py-12 text-center">
+    Ningún proyecto coincide con esos filtros.
+  </p>
+</Base>
+
+<script>
+  const seleccion = {
+    usos: new Set<string>(),
+    materiales: new Set<string>(),
+  };
+  type Grupo = keyof typeof seleccion;
+
+  const botones = document.querySelectorAll<HTMLButtonElement>('[data-filtro]');
+  const tarjetas = document.querySelectorAll<HTMLElement>('article[data-usos]');
+  const limpiar = document.getElementById('limpiar') as HTMLButtonElement;
+  const vacio = document.getElementById('vacio') as HTMLElement;
+
+  function aplicar() {
+    let visibles = 0;
+    tarjetas.forEach((t) => {
+      const usos = (t.dataset.usos ?? '').split('|');
+      const mats = (t.dataset.materiales ?? '').split('|');
+      // Dentro de un grupo: "o". Entre grupos: "y".
+      const okUsos = seleccion.usos.size === 0 || usos.some((u) => seleccion.usos.has(u));
+      const okMats =
+        seleccion.materiales.size === 0 || mats.some((m) => seleccion.materiales.has(m));
+      t.hidden = !(okUsos && okMats);
+      if (!t.hidden) visibles++;
+    });
+    vacio.hidden = visibles !== 0;
+    limpiar.hidden = seleccion.usos.size + seleccion.materiales.size === 0;
+  }
+
+  botones.forEach((b) => {
+    b.addEventListener('click', () => {
+      const grupo = b.dataset.filtro as Grupo;
+      const valor = b.dataset.valor as string;
+      if (seleccion[grupo].has(valor)) {
+        seleccion[grupo].delete(valor);
+        b.setAttribute('aria-pressed', 'false');
+      } else {
+        seleccion[grupo].add(valor);
+        b.setAttribute('aria-pressed', 'true');
+      }
+      aplicar();
+    });
+  });
+
+  limpiar.addEventListener('click', () => {
+    seleccion.usos.clear();
+    seleccion.materiales.clear();
+    botones.forEach((b) => b.setAttribute('aria-pressed', 'false'));
+    aplicar();
+  });
+</script>

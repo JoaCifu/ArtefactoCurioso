@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+@theme {
+  --color-papel: #FAF7F2;
+  --color-tinta: #1F1D1A;
+  --color-acento: #B8892B;
+}

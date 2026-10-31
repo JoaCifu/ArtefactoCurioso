@@ -3,7 +3,6 @@ titulo: Tramoyas
 anio: 2022
 resumen: construccion tramoyas de 31 minutos para el museo en Mexico.
 usos:
-  - escenografía
   - muñecos
 materiales:
   - textil

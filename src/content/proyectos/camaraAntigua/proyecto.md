@@ -3,7 +3,6 @@ titulo: Camara Antigua
 anio: 2020
 resumen: recreacion camara antigua para teleseria de epoca
 usos:
-  - escenografía
   - utilería
 materiales:
   - madera

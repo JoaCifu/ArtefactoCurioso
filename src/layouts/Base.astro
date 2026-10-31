@@ -1,0 +1,40 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  titulo?: string;
+  descripcion?: string;
+}
+const {
+  titulo = 'Taller Artefacto Curioso',
+  descripcion = 'Utilería, escenografía, muñecos y corpóreos hechos a medida.',
+} = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={descripcion} />
+    <title>{titulo}</title>
+  </head>
+  <body class="bg-papel text-tinta min-h-screen flex flex-col">
+    <header class="border-b border-tinta/15">
+      <div class="mx-auto max-w-6xl px-4 py-6">
+        <a href={`${base}/`} class="text-2xl font-bold tracking-tight">
+          Taller Artefacto Curioso
+        </a>
+      </div>
+    </header>
+
+    <main class="flex-1 mx-auto w-full max-w-6xl px-4 py-8">
+      <slot />
+    </main>
+
+    <footer class="border-t border-tinta/15 text-sm">
+      <div class="mx-auto max-w-6xl px-4 py-6">
+        © {new Date().getFullYear()} Taller Artefacto Curioso
+      </div>
+    </footer>
+  </body>
+</html>
