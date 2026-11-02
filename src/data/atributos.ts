@@ -3,6 +3,7 @@ export const USOS = [
   'utilería',
   'muñecos',
   'corpóreos',
+  'máscaras',
 ] as const;
 
 export const MATERIALES = [
