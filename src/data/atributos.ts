@@ -4,6 +4,9 @@ export const USOS = [
   'muñecos',
   'corpóreos',
   'máscaras',
+  'cine',
+  'publicidad',
+  'television',
 ] as const;
 
 export const MATERIALES = [
@@ -13,4 +16,9 @@ export const MATERIALES = [
   'madera',
   'espuma',
   'resina',
+  'plumas',
+  'worbla',
+  'goma eva',
+  'papel',
+  'latex',
 ] as const;
