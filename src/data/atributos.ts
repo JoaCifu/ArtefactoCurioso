@@ -7,6 +7,7 @@ export const USOS = [
   'cine',
   'publicidad',
   'television',
+  'teatro',
 ] as const;
 
 export const MATERIALES = [
@@ -21,4 +22,5 @@ export const MATERIALES = [
   'goma eva',
   'papel',
   'latex',
+  'PVC',
 ] as const;
