@@ -23,4 +23,6 @@ export const MATERIALES = [
   'papel',
   'latex',
   'PVC',
+  'cartón',
+  'plástico y resinas',
 ] as const;
