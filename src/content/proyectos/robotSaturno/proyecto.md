@@ -4,7 +4,7 @@ anio: 2011
 resumen: Restauración robot para publicidad
 usos:
   - publicidad
-  - muñecos
+  - títeres y muñecos
 materiales:
   - plástico y resinas
   - latex

@@ -1,9 +1,10 @@
 export const USOS = [
-  'escenografía',
-  'utilería',
-  'muñecos',
   'corpóreos',
   'máscaras',
+  'títeres y muñecos',
+  'utilería',
+  'escenografía',
+  'vestuario',
   'cine',
   'publicidad',
   'television',

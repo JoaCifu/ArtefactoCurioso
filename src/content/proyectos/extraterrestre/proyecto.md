@@ -3,7 +3,7 @@ titulo: extraterrestre
 anio: 2026
 resumen: construccion de extraterretre para campaña publicitaria
 usos:
-  - muñecos
+  - títeres y muñecos
 materiales:
   - fibra de vidrio
 fotos:
